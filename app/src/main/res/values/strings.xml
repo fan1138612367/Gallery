@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Gallery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imageView">ImageView</string>
+    <string name="menuRefresh">Swipe To Refresh</string>
+    <string name="titlePager">PagerPhoto</string>
+    <string name="photo_tag">%d / %d</string>
+</resources>
