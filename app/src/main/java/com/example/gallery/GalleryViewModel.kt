@@ -23,7 +23,7 @@ class GalleryViewModel(application: Application) :
                     Gson().fromJson(it, Pixabay::class.java).hits.toList()   //Gson解析并赋值
             },
             {
-                Log.d("hello", it.toString())   //错误响应
+                Log.d("DEBUG", it.toString())   //错误响应
             }
         )
         VolleySingleton.getInstance(getApplication()).requestQueue.add(stringRequest)   //添加到队列中

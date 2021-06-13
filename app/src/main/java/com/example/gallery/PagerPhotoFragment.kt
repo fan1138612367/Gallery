@@ -49,8 +49,20 @@ class PagerPhotoFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
 
-        binding = FragmentPagerPhotoBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentPagerPhotoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {   //重写方法
+        super.onViewCreated(view, savedInstanceState)
+
         val photoList = arguments?.getParcelableArrayList<PhotoItem>("PHOTO_LIST")  //获取传递List
         PagerPhotoListAdapter().apply {
             binding.viewPager2.adapter = this
@@ -122,14 +134,6 @@ class PagerPhotoFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     companion object {

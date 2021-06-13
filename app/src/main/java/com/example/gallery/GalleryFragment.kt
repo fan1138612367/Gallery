@@ -33,10 +33,21 @@ class GalleryFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
 
-        binding = FragmentGalleryBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {   //重写方法
+        super.onViewCreated(view, savedInstanceState)
+
         val galleryAdapter = GalleryAdapter()
-
         setHasOptionsMenu(true) //设置menu
         binding.recyclerView.apply {
             adapter = galleryAdapter    //设置适配器
@@ -53,14 +64,6 @@ class GalleryFragment : Fragment() {
         binding.swipeLayoutGallery.setOnRefreshListener {   //设置下拉刷新
             galleryViewModel.fetchData()    //重新获取数据
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {  //重写方法，加载menu

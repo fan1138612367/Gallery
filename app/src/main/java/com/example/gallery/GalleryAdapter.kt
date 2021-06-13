@@ -30,7 +30,7 @@ class GalleryAdapter : ListAdapter<PhotoItem, MyViewHolder>(DiffCallback) {
         holder.itemView.setOnClickListener {
             Bundle().apply {
                 putParcelableArrayList("PHOTO_LIST", ArrayList(currentList))    //传递整个List
-                putInt("PHOTO_POSITION", holder.adapterPosition)    //传递当前图片位置
+                putInt("PHOTO_POSITION", holder.absoluteAdapterPosition)    //传递当前图片位置
                 holder.itemView.findNavController()
                     .navigate(R.id.action_galleryFragment_to_pagerPhotoFragment, this)
             }
