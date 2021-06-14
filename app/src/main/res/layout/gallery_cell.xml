@@ -26,6 +26,7 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/imageView"
                 android:scaleType="centerCrop"
+                tools:ignore="ImageContrastCheck"
                 tools:srcCompat="@tools:sample/avatars" />
         </io.supercharge.shimmerlayout.ShimmerLayout>
 

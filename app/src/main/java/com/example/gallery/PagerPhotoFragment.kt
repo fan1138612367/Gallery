@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -38,6 +39,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class PagerPhotoFragment : Fragment() {
     private lateinit var binding: FragmentPagerPhotoBinding
+    private lateinit var galleryViewModel: GalleryViewModel
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -63,18 +65,26 @@ class PagerPhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {   //重写方法
         super.onViewCreated(view, savedInstanceState)
 
-        val photoList = arguments?.getParcelableArrayList<PhotoItem>("PHOTO_LIST")  //获取传递List
-        PagerPhotoListAdapter().apply {
-            binding.viewPager2.adapter = this
-            submitList(photoList)
-        }
+        galleryViewModel = activityViewModels<GalleryViewModel>().value
+        val adapter = PagerPhotoListAdapter()
+        binding.viewPager2.adapter = adapter
+        galleryViewModel.pagedListLiveData.observe(viewLifecycleOwner, {
+            adapter.submitList(it)
+            binding.viewPager2.setCurrentItem(
+                arguments?.getInt("PHOTO_POSITION") ?: 0,
+                false
+            )  //设置当前页
+        })
 
         binding.viewPager2.apply {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {    //重写方法，所选页面
                     super.onPageSelected(position)
-                    binding.photoTag.text =
-                        getString(R.string.photo_tag, position + 1, photoList?.size)
+                    binding.photoTag.text = getString(
+                        R.string.photo_tag,
+                        position + 1,
+                        galleryViewModel.pagedListLiveData.value?.size
+                    )
                 }
             })
             setCurrentItem(arguments?.getInt("PHOTO_POSITION") ?: 0, false) //设置当前页面
@@ -83,7 +93,7 @@ class PagerPhotoFragment : Fragment() {
         val requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->    //动态申请权限
                 permissions.entries.forEach {
-                    Log.d("DEBUG", "${it.key} = ${it.value}")
+                    Log.d("hello", "${it.key} = ${it.value}")
                 }
                 if (permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] == true) {
                     viewLifecycleOwner.lifecycleScope.launch { savePhoto() }   //协程处理

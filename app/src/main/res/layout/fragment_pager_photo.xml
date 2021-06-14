@@ -39,9 +39,11 @@
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:contentDescription="@string/imageView"
+        android:focusable="true"
         android:src="@drawable/save_button_image"
         app:layout_constraintBottom_toBottomOf="@+id/photoTag"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/photoTag" />
+        app:layout_constraintTop_toTopOf="@+id/photoTag"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

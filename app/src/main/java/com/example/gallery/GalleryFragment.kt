@@ -3,9 +3,10 @@ package com.example.gallery
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.gallery.databinding.FragmentGalleryBinding
 
@@ -47,7 +48,8 @@ class GalleryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {   //重写方法
         super.onViewCreated(view, savedInstanceState)
 
-        val galleryAdapter = GalleryAdapter()
+        galleryViewModel = activityViewModels<GalleryViewModel>().value
+        val galleryAdapter = GalleryAdapter(galleryViewModel)
         setHasOptionsMenu(true) //设置menu
         binding.recyclerView.apply {
             adapter = galleryAdapter    //设置适配器
@@ -55,15 +57,18 @@ class GalleryFragment : Fragment() {
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)  //设置两列交错
         }
 
-        galleryViewModel = viewModels<GalleryViewModel>().value
-        galleryViewModel.photoListLive.observe(this, {
+        galleryViewModel.pagedListLiveData.observe(viewLifecycleOwner, {
             galleryAdapter.submitList(it)   //当数据改变时提交
-            binding.swipeLayoutGallery.isRefreshing = false //停止刷新
         })
-        galleryViewModel.photoListLive.value ?: galleryViewModel.fetchData()    //第一次获取数据
         binding.swipeLayoutGallery.setOnRefreshListener {   //设置下拉刷新
-            galleryViewModel.fetchData()    //重新获取数据
+            galleryViewModel.resetQuery()   //重新获取数据
         }
+        galleryViewModel.networkStatus.observe(viewLifecycleOwner, {
+            Log.d("hello", "onViewCreated:$it")
+            galleryAdapter.updateNetworkStatus(it)
+            binding.swipeLayoutGallery.isRefreshing =
+                it == NetworkStatus.INITIAL_LOADING  //只有初次加载为true
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {  //重写方法，加载menu
@@ -76,8 +81,8 @@ class GalleryFragment : Fragment() {
             R.id.swipeIndicator -> {
                 binding.swipeLayoutGallery.isRefreshing = true
                 Handler(Looper.getMainLooper()).postDelayed(     //延迟1秒再获取数据
-                    { galleryViewModel.fetchData() },
-                    1000
+                    { galleryViewModel.resetQuery() },
+                    500
                 )
             }
         }
