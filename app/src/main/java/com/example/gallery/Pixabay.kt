@@ -4,33 +4,12 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Pixabay(
     val total: Int, //总数
     val totalHits: Int, //返回数量
-    val hits: Array<PhotoItem>, //内容
-) {
-    //自动创建
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Pixabay
-
-        if (totalHits != other.totalHits) return false
-        if (!hits.contentEquals(other.hits)) return false
-        if (total != other.total) return false
-
-        return true
-    }
-
-    //自动创建
-    override fun hashCode(): Int {
-        var result = totalHits
-        result = 31 * result + hits.contentHashCode()
-        result = 31 * result + total
-        return result
-    }
-}
+    val hits: List<PhotoItem>, //内容
+) : Parcelable
 
 @Parcelize
 data class PhotoItem(

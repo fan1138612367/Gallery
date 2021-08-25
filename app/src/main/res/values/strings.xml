@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Gallery</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="imageView">ImageView</string>
+    <string name="imageView" translatable="false">ImageView</string>
     <string name="menuRefresh">Swipe To Refresh</string>
     <string name="titlePager">PagerPhoto</string>
-    <string name="photo_tag">%d / %d</string>
+    <string name="photo_tag" translatable="false">%d / %d</string>
+    <string name="save_success">Save Success</string>
+    <string name="save_fail">Save Fail</string>
+    <string name="toast_quit">Press the return key again to exit</string>
 </resources>
