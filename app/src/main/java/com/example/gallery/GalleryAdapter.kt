@@ -1,6 +1,5 @@
 package com.example.gallery
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import coil.load
 import com.example.gallery.databinding.GalleryCellBinding
 import com.example.gallery.databinding.GalleryFooterBinding
 
@@ -34,29 +29,12 @@ class GalleryAdapter : PagingDataAdapter<PhotoItem, PixabayViewHolder>(DiffCallb
                 textViewLikes.text = photoItem.photoLikes.toString()
                 textViewFavorites.text = photoItem.photoFavorites.toString()
                 imageView.layoutParams.height = photoItem.photoHeight
-                Glide.with(holder.itemView)
-                    .load(photoItem.previewURL)
-                    .placeholder(R.drawable.photo_placeholder)
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false.also { shimmerLayoutCell.stopShimmerAnimation() }
-                        }
-                    }).into(imageView)
+                imageView.load(photoItem.previewURL) {
+                    placeholder(R.drawable.photo_placeholder)
+                    listener { _, _ ->
+                        shimmerLayoutCell.stopShimmerAnimation()
+                    }
+                }
             }
         }
     }
