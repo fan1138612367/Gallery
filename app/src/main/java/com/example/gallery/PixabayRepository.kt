@@ -10,7 +10,11 @@ object PixabayRepository {
 
     fun getPagingData(): Flow<PagingData<PhotoItem>> {
         return Pager(
-            PagingConfig(50)
+            PagingConfig(
+                pageSize = 50,
+                initialLoadSize = 50,
+                prefetchDistance = 10
+            )
         ) {
             PixabayPagingSource(pixabayService)
         }.flow

@@ -17,8 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.fragmentContainerView
 
-        navController =
-            (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
+        navController = binding.fragmentContainerView.getFragment<NavHostFragment>().navController
         NavigationUI.setupActionBarWithNavController(this, navController)   //设置返回键
     }
 

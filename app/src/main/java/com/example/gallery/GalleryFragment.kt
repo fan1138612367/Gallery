@@ -46,11 +46,9 @@ class GalleryFragment : Fragment() {
         setHasOptionsMenu(true)
         adapter.apply {
             binding.recyclerView.adapter = this.withLoadStateFooter(FooterAdapter { retry() })
-            galleryViewModel.pagingData.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    submitData(it)
-                }
-            })
+            galleryViewModel.pagingData.observe(viewLifecycleOwner) {
+                submitData(viewLifecycleOwner.lifecycle, it)
+            }
             addLoadStateListener {
                 when (it.refresh) {
                     is LoadState.NotLoading -> {
@@ -66,7 +64,7 @@ class GalleryFragment : Fragment() {
                         viewLifecycleOwner.lifecycleScope.launch {
                             delay(3000)
                             binding.swipeLayoutGallery.isRefreshing = false
-                            refresh().run { binding.swipeLayoutGallery.isRefreshing = true }
+                            retry()
                         }
                     }
                 }

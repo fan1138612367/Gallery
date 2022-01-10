@@ -2,8 +2,8 @@ package com.example.gallery
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
@@ -15,7 +15,13 @@ import coil.load
 import com.example.gallery.databinding.GalleryCellBinding
 import com.example.gallery.databinding.GalleryFooterBinding
 
-class GalleryAdapter : PagingDataAdapter<PhotoItem, PixabayViewHolder>(DiffCallback) {
+class GalleryAdapter : PagingDataAdapter<PhotoItem, PixabayViewHolder>(
+    object : DiffUtil.ItemCallback<PhotoItem>() {
+        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem) =
+            oldItem.photoId == newItem.photoId
+
+        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem == newItem
+    }) {
     override fun onBindViewHolder(holder: PixabayViewHolder, position: Int) {
         val photoItem = getItem(position)
         if (photoItem != null) {
@@ -56,13 +62,6 @@ class GalleryAdapter : PagingDataAdapter<PhotoItem, PixabayViewHolder>(DiffCallb
         }
         return holder
     }
-
-    object DiffCallback : DiffUtil.ItemCallback<PhotoItem>() {
-        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem) =
-            oldItem.photoId == newItem.photoId
-
-        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem == newItem
-    }
 }
 
 class PixabayViewHolder(val viewBinding: GalleryCellBinding) :
@@ -71,22 +70,12 @@ class PixabayViewHolder(val viewBinding: GalleryCellBinding) :
 class FooterAdapter(private val retry: () -> Unit) : LoadStateAdapter<FooterViewHolder>() {
     override fun onBindViewHolder(holder: FooterViewHolder, loadState: LoadState) {
         holder.viewBinding.apply {
+            progressBar.isVisible = loadState is LoadState.Loading
+            holder.itemView.isClickable = loadState is LoadState.Error
             when (loadState) {
-                is LoadState.Loading -> {
-                    textView.text = "正在加载"
-                    progressBar.visibility = View.VISIBLE
-                    holder.itemView.isClickable = false
-                }
-                is LoadState.Error -> {
-                    textView.text = "加载出错，点击重试"
-                    progressBar.visibility = View.GONE
-                    holder.itemView.isClickable = true
-                }
-                else -> {
-                    textView.text = "加载完毕"
-                    progressBar.visibility = View.GONE
-                    holder.itemView.isClickable = false
-                }
+                is LoadState.Loading -> textView.text = "正在加载"
+                is LoadState.Error -> textView.text = "加载出错，点击重试"
+                else -> textView.text = "加载完毕"
             }
         }
     }

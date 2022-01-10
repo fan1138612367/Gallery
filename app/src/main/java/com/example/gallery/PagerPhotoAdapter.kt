@@ -8,7 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.gallery.databinding.PagerPhotoViewBinding
 
-class PagerPhotoAdapter : PagingDataAdapter<PhotoItem, PagerPhotoViewHolder>(DiffCallback) {
+class PagerPhotoAdapter : PagingDataAdapter<PhotoItem, PagerPhotoViewHolder>(
+    object : DiffUtil.ItemCallback<PhotoItem>() {
+        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean { //实现成员
+            return oldItem.photoId == newItem.photoId   //判断Item是否相同
+        }
+
+        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {  //实现成员
+            return oldItem == newItem   //判断内容是否相同
+        }
+    }) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -35,16 +44,6 @@ class PagerPhotoAdapter : PagingDataAdapter<PhotoItem, PagerPhotoViewHolder>(Dif
                     shimmerLayout.stopShimmerAnimation()
                 }
             }
-        }
-    }
-
-    object DiffCallback : DiffUtil.ItemCallback<PhotoItem>() {
-        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean { //实现成员
-            return oldItem.photoId == newItem.photoId   //判断Item是否相同
-        }
-
-        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {  //实现成员
-            return oldItem == newItem   //判断内容是否相同
         }
     }
 }

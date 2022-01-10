@@ -46,12 +46,10 @@ class PagerPhotoFragment : Fragment() {
         val pagerPhotoAdapter by lazy { PagerPhotoAdapter() }
         binding.viewPager2.apply {
             adapter = pagerPhotoAdapter
-            galleryViewModel.pagingData.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    pagerPhotoAdapter.submitData(it)
-                }
+            galleryViewModel.pagingData.observe(viewLifecycleOwner) {
+                pagerPhotoAdapter.submitData(viewLifecycleOwner.lifecycle, it)
                 setCurrentItem(arguments?.getInt("PHOTO_POSITION") ?: 0, false)
-            })
+            }
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {    //重写方法，所选页面
                     super.onPageSelected(position)
