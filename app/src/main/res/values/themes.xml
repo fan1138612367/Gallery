@@ -14,9 +14,12 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.Gallery.MyStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:statusBarColor">@color/primary_material_dark</item>
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+    <style name="Theme.Gallery.MyStyle" parent="Theme.Material3.DayNight">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme
+        </item>
+        <item name="colorPrimary">@color/white</item>
     </style>
 </resources>
