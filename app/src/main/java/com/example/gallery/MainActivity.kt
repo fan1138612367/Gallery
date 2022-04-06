@@ -15,8 +15,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.fragmentContainerView
-
         navController = binding.fragmentContainerView.getFragment<NavHostFragment>().navController
         NavigationUI.setupActionBarWithNavController(this, navController)   //设置返回键
     }

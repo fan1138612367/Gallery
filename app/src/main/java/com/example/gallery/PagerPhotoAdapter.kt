@@ -2,22 +2,27 @@ package com.example.gallery
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.gallery.databinding.PagerPhotoViewBinding
 
-class PagerPhotoAdapter : PagingDataAdapter<PhotoItem, PagerPhotoViewHolder>(
-    object : DiffUtil.ItemCallback<PhotoItem>() {
-        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean { //实现成员
-            return oldItem.photoId == newItem.photoId   //判断Item是否相同
-        }
+class PagerPhotoAdapter(private val activity: AppCompatActivity) :
+    PagingDataAdapter<PhotoItem, PagerPhotoViewHolder>(
+        object : DiffUtil.ItemCallback<PhotoItem>() {
+            override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean { //实现成员
+                return oldItem.photoId == newItem.photoId   //判断Item是否相同
+            }
 
-        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {  //实现成员
-            return oldItem == newItem   //判断内容是否相同
-        }
-    }) {
+            override fun areContentsTheSame(
+                oldItem: PhotoItem,
+                newItem: PhotoItem
+            ): Boolean {  //实现成员
+                return oldItem == newItem   //判断内容是否相同
+            }
+        }) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,12 +43,16 @@ class PagerPhotoAdapter : PagingDataAdapter<PhotoItem, PagerPhotoViewHolder>(
                 setShimmerAngle(30)
                 startShimmerAnimation()
             }
-            pagerPhoto.load(getItem(position)?.fullURL) {
+            imageView.load(getItem(position)?.fullURL) {
                 placeholder(R.drawable.photo_placeholder)
                 listener { _, _ ->
                     shimmerLayout.stopShimmerAnimation()
                 }
             }
+            ImageGesture(
+                imageView,
+                DragCloseHelper(mContext = activity, parentV = root, childV = imageView)
+            )
         }
     }
 }

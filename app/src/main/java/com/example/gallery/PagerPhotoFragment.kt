@@ -8,15 +8,16 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,7 @@ class PagerPhotoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val galleryViewModel by activityViewModels<GalleryViewModel>()
-        val pagerPhotoAdapter by lazy { PagerPhotoAdapter() }
+        val pagerPhotoAdapter by lazy { PagerPhotoAdapter(requireActivity() as AppCompatActivity) }
         binding.viewPager2.apply {
             adapter = pagerPhotoAdapter
             galleryViewModel.pagingData.observe(viewLifecycleOwner) {
@@ -99,7 +100,7 @@ class PagerPhotoFragment : Fragment() {
     private fun savePhoto() {
         val holder =
             (binding.viewPager2[0] as RecyclerView).findViewHolderForAdapterPosition(binding.viewPager2.currentItem) as PagerPhotoViewHolder    //大图的Holder
-        val bitmap = holder.viewBinding.pagerPhoto.drawable.toBitmap()  //转换为位图
+        val bitmap = holder.viewBinding.imageView.drawable.toBitmap()  //转换为位图
         val saveUri = requireContext().contentResolver.insert(  //保存路径占位
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             ContentValues()

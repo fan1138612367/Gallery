@@ -2,10 +2,12 @@
 <io.supercharge.shimmerlayout.ShimmerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/shimmerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/pagerPhoto"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="@string/imageView" />
 </io.supercharge.shimmerlayout.ShimmerLayout>
