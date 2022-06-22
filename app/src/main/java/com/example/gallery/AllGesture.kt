@@ -22,11 +22,11 @@ interface AllGesture : ScaleGestureDetector.OnScaleGestureListener,
     override fun onDown(e: MotionEvent): Boolean = false
 
     override fun onFling(
-        e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float
+        e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float
     ): Boolean = false
 
     override fun onScroll(
-        e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float
+        e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float
     ): Boolean = false
 
     override fun onLongPress(e: MotionEvent) {}

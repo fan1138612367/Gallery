@@ -281,15 +281,15 @@ class DragCloseHelper(
             )
         }
         anim.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
                 dragCloseListener?.dragClose(false)
                 mContext.supportFinishAfterTransition()
                 mContext.overridePendingTransition(R.anim.image_enter, R.anim.image_exit)
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
         })
         anim.setDuration(100).start()
     }
@@ -345,11 +345,11 @@ class DragCloseHelper(
             }
         }
         animatorY.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationStart(animation: Animator) {
                 isResettingAnimate = true
             }
 
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 if (isResettingAnimate) {
                     parentV.background.mutate().alpha = 255
                     mCurrentTranslationY = 0f
@@ -359,8 +359,8 @@ class DragCloseHelper(
                 }
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
         })
         animatorY.setDuration(100).start()
     }

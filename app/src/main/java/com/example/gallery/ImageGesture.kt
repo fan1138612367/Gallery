@@ -83,7 +83,7 @@ class ImageGesture(
     }
 
     override fun onScroll(
-        e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float
+        e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float
     ): Boolean {
         var handled = false
         val viewWidth = mImageView.width
@@ -93,16 +93,16 @@ class ImageGesture(
         if (distanceX > 0) {
             if (mDisplayRect.right > viewWidth) {
                 handled = true
-            } else if (abs((e2?.x ?: 0f) - (e1?.x ?: 0f)) -
-                abs((e2?.y ?: 0f) - (e1?.y ?: 0f)) > 64
+            } else if (abs(e2.x - e1.x) -
+                abs(e2.y - e1.y) > 64
             ) {
                 mImageView.parent?.requestDisallowInterceptTouchEvent(false)
             }
         } else {
             if (mDisplayRect.left < 0f) {
                 handled = true
-            } else if (abs((e2?.x ?: 0f) - (e1?.x ?: 0f)) -
-                abs((e2?.y ?: 0f) - (e1?.y ?: 0f)) > 64
+            } else if (abs(e2.x - e1.x) -
+                abs(e2.y - e1.y) > 64
             ) {
                 mImageView.parent?.requestDisallowInterceptTouchEvent(false)
             }
@@ -111,16 +111,16 @@ class ImageGesture(
         if (distanceY > 0) {
             if (mDisplayRect.bottom > viewHeight) {
                 handled = true
-            } else if (abs((e2?.y ?: 0f) - (e1?.y ?: 0f)) -
-                abs((e2?.x ?: 0f) - (e1?.x ?: 0f)) > 64
+            } else if (abs(e2.y - e1.y) -
+                abs(e2.x - e1.x) > 64
             ) {
                 mImageView.parent?.requestDisallowInterceptTouchEvent(false)
             }
         } else {
             if (mDisplayRect.top < 0f) {
                 handled = true
-            } else if (abs((e2?.y ?: 0f) - (e1?.y ?: 0f)) -
-                abs((e2?.x ?: 0f) - (e1?.x ?: 0f)) > 64
+            } else if (abs(e2.y - e1.y) -
+                abs(e2.x - e1.x) > 64
             ) {
                 mImageView.parent?.requestDisallowInterceptTouchEvent(false)
             }
@@ -134,7 +134,7 @@ class ImageGesture(
     }
 
     override fun onFling(
-        e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float
+        e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float
     ): Boolean {
         //velocityX < 0 手指向左滑动
         //velocityY > 0 手指向右滑动
