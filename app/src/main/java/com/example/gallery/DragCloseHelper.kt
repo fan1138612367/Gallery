@@ -3,11 +3,9 @@ package com.example.gallery
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.window.layout.WindowMetricsCalculator
 import kotlin.math.abs
@@ -128,6 +126,7 @@ class DragCloseHelper(
                 resetClickEvent()
                 return false
             }
+
             dragCloseListener?.intercept() == true -> {
                 //被接口中的方法拦截，但是如果设置了点击事件，将继续执行点击逻辑
                 if (clickListener != null) {
@@ -137,10 +136,12 @@ class DragCloseHelper(
                             //开始延迟
                             checkForLongClick()
                         }
+
                         MotionEvent.ACTION_UP -> {
                             //处理事件
                             dealClickEvent()
                         }
+
                         MotionEvent.ACTION_CANCEL -> {
                             //取消事件
                             resetClickEvent()
@@ -150,6 +151,7 @@ class DragCloseHelper(
                 isSwipingToClose = false
                 return false
             }
+
             else -> when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     reset()
@@ -168,6 +170,7 @@ class DragCloseHelper(
                     //初始化数据
                     lastPointerId = event.getPointerId(0)
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     if (isInvalidTouch || mLastRawY == -1f) {
                         //无效触摸区域，则需要拦截
@@ -231,6 +234,7 @@ class DragCloseHelper(
                         return true
                     }
                 }
+
                 MotionEvent.ACTION_UP -> {
                     if (isInvalidTouch) {
                         //无效触摸区域，则需要拦截
@@ -251,6 +255,7 @@ class DragCloseHelper(
                         return true
                     }
                 }
+
                 MotionEvent.ACTION_CANCEL -> {
                     //取消事件
                     resetClickEvent()
@@ -445,14 +450,6 @@ class DragCloseHelper(
     /**
      * 获取屏幕原始尺寸高度，包括虚拟功能键高度
      */
-    private fun getDpi(context: AppCompatActivity): Int {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        println(
-            WindowMetricsCalculator.getOrCreate()
-                .computeCurrentWindowMetrics(context).bounds.height()
-        )
-        windowManager.defaultDisplay.getRealMetrics(displayMetrics)
-        return displayMetrics.heightPixels
-    }
+    private fun getDpi(context: AppCompatActivity) =
+        WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(context).bounds.height()
 }
